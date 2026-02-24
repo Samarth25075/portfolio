@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Portfolio - Professional Developer</title>
+    <title>Animated Portfolio - Samarth Patel</title>
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -213,27 +213,38 @@
                 </div>
             </div>
 
-            <form class="contact-form" id="contactForm">
+            <!-- Updated Form with FormSubmit.co -->
+            <form class="contact-form" action="https://formsubmit.co/patel25samarth7@gmail.com" method="POST">
+                <!-- FormSubmit Configuration -->
+                <input type="hidden" name="_subject" value="New Portfolio Contact from Website!">
+                <input type="hidden" name="_template" value="box">
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+                <input type="hidden" name="_autoresponse" value="Thank you for contacting me! I'll get back to you within 24 hours.">
+                
                 <div class="form-group">
                     <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
                 </div>
                 <div class="form-group">
                     <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
+                    <input type="text" id="subject" name="subject" placeholder="Project Inquiry" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
+                    <textarea id="message" name="message" placeholder="Your message here..." required></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
                 </div>
-                <div id="formStatus" class="form-status"></div>
+                <!-- Optional: Add a honeypot field to prevent spam -->
+                <input type="text" name="_honey" style="display:none">
+                <!-- Disable captcha for testing, enable for production -->
+                <input type="hidden" name="_captcha" value="false">
             </form>
         </div>
     </section>

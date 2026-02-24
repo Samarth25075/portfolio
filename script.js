@@ -98,11 +98,12 @@ window.addEventListener('scroll', () => {
     });
 
     navLinks.forEach(link => {
-        link.style.color = '#fff';
-        link.style.borderBottom = 'none';
-        link.style.paddingBottom = '0';
+        link.style.color = '';
+        link.style.borderBottom = '';
+        link.style.paddingBottom = '';
+        
         if (link.getAttribute('href') === `#${current}`) {
-            link.style.borderBottom = '2px solid var(--primary)';
+            link.style.borderBottom = '2px solid var(--primary-color, #007bff)';
             link.style.paddingBottom = '5px';
         }
     });
@@ -110,75 +111,43 @@ window.addEventListener('scroll', () => {
 
 
 // ============================================
-// CONTACT FORM — SEND EMAIL VIA VERCEL API
+// FORM SUBMISSION HANDLER (FOR FORMSUBMIT.CO)
 // ============================================
-document.getElementById('contactForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
 
-    const name    = document.getElementById('name').value.trim();
-    const email   = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    const submitBtn = document.getElementById('submitBtn');
-    const formStatus = document.getElementById('formStatus');
-
-    // --- Client-side validation ---
-    if (!name || !email || !subject || !message) {
-        formStatus.className = 'form-status error';
-        formStatus.textContent = '⚠️ Please fill in all fields before submitting.';
-        return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        formStatus.className = 'form-status error';
-        formStatus.textContent = '⚠️ Please enter a valid email address.';
-        return;
-    }
-
-    // --- Show loading state ---
-    submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ Sending...';
-    formStatus.className = 'form-status loading';
-    formStatus.textContent = 'Sending your message, please wait...';
-
-    try {
-        const response = await fetch('/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, subject, message })
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            // --- Success ---
-            document.getElementById('contactForm').reset();
-            formStatus.className = 'form-status success';
-            formStatus.textContent = `✅ Message sent! A confirmation has been sent to ${email}. I'll get back to you soon.`;
-
-            // Clear message after 6 seconds
-            setTimeout(() => {
-                formStatus.textContent = '';
-                formStatus.className = 'form-status';
-            }, 6000);
-
-        } else {
-            throw new Error(result.message || 'Something went wrong.');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        // Don't prevent default - let FormSubmit do its job
+        // Just show loading state on button
+        
+        // Validate fields before submission
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+        
+        if (!name || !email || !subject || !message) {
+            e.preventDefault();
+            alert('⚠️ Please fill in all fields before submitting.');
+            return;
         }
-
-    } catch (error) {
-        console.error('Form submission error:', error);
-        formStatus.className = 'form-status error';
-        formStatus.textContent = '❌ Failed to send message. Please try again or email me directly at patel25samarth7@gmail.com';
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-    }
-});
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            alert('⚠️ Please enter a valid email address.');
+            return;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Sending...';
+        
+        // FormSubmit will handle the rest
+        // The page will redirect to thank-you page on success
+    });
+}
 
 
 // ============================================
@@ -236,5 +205,25 @@ document.querySelectorAll('.social-link').forEach((link, index) => {
 // ============================================
 // AUTO UPDATE COPYRIGHT YEAR
 // ============================================
-document.querySelector('footer p').innerHTML = 
-    `&copy; ${new Date().getFullYear()} Samarth Patel. All rights reserved. | Crafted with ❤️`;
+const footerYear = document.querySelector('footer p');
+if (footerYear) {
+    footerYear.innerHTML = `&copy; ${new Date().getFullYear()} Samarth Patel. All rights reserved. | Crafted with ❤️`;
+}
+
+
+// ============================================
+// ADD ROTATION ANIMATION KEYFRAME
+// ============================================
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes rotate360 {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes progressBar {
+        from { width: 0; }
+        to { width: var(--percentage); }
+    }
+`;
+document.head.appendChild(style);

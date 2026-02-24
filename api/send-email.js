@@ -13,19 +13,23 @@ module.exports = async (req, res) => {
         return res.status(400).json({ success: false, message: 'All fields are required' });
     }
 
+    // ✅ Your Gmail credentials — use App Password (not your normal Gmail password)
+    const EMAIL_USER = 'patel25samarth7@gmail.com';
+    const EMAIL_PASS = 'voxc sxyy nyxo sznl'; // 👈 Replace this
+
     // Create transporter using Gmail
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER,   // your Gmail: patel25samarth7@gmail.com
-            pass: process.env.EMAIL_PASS    // Gmail App Password (not your normal password)
+            user: EMAIL_USER,
+            pass: EMAIL_PASS
         }
     });
 
     try {
         // ✅ Email 1: Send to YOU (portfolio owner) — notification of new message
         await transporter.sendMail({
-            from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+            from: `"Portfolio Contact" <${EMAIL_USER}>`,
             to: 'patel25samarth7@gmail.com',
             subject: `📬 New Contact: ${subject}`,
             html: `
@@ -46,7 +50,7 @@ module.exports = async (req, res) => {
 
         // ✅ Email 2: Send confirmation to USER who filled the form
         await transporter.sendMail({
-            from: `"Samarth Patel" <${process.env.EMAIL_USER}>`,
+            from: `"Samarth Patel" <${EMAIL_USER}>`,
             to: email,
             subject: `✅ Thanks for reaching out, ${name}!`,
             html: `
